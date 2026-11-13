@@ -1,0 +1,84 @@
+/* ===== Cursor pointer pada kontrol interaktif ===== */
+vaadin-button,
+vaadin-menu-bar-item,
+vaadin-menu-bar-button,
+vaadin-context-menu-item,
+vaadin-tab,
+vaadin-drawer-toggle,
+vaadin-upload-button,
+vaadin-side-nav-item,
+vaadin-grid-sorter,
+vaadin-checkbox,
+a,
+.clickable {
+    cursor: pointer;
+}
+
+vaadin-button[disabled],
+vaadin-grid-sorter[disabled] {
+    cursor: not-allowed;
+}
+
+/* ===== Dialog modal: header primer, footer abu-abu, tombol di kanan ===== */
+vaadin-dialog-overlay::part(header) {
+    background: #2563EB;
+    color: #FFFFFF;
+}
+
+vaadin-dialog-overlay::part(title) {
+    color: #FFFFFF;
+}
+
+vaadin-dialog-overlay::part(footer) {
+    background: #F3F4F6;
+    border-top: 1px solid #D1D5DB;
+    justify-content: flex-end;
+}
+
+/* ===== Indikator loading global (glowing bar) ===== */
+.v-loading-indicator {
+    height: 4px;
+    background: linear-gradient(90deg, #2563EB, #60A5FA, #2563EB);
+    box-shadow: 0 0 10px #2563EB;
+}
+
+/* ===== Kartu ===== */
+.page-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.summary-card {
+    flex: 1 1 180px;
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.summary-card .label {
+    font-size: 0.8rem;
+    color: #6B7280;
+}
+
+.summary-card .value {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.income {
+    color: #16A34A;
+}
+
+.expense {
+    color: #DC2626;
+}
+
+.proof-thumb {
+    height: 40px;
+    border-radius: 6px;
+    cursor: pointer;
+}

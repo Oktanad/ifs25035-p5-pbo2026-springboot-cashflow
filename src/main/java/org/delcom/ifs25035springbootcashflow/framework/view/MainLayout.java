@@ -1,0 +1,80 @@
+package org.delcom.ifs25035springbootcashflow.framework.view;
+
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.menubar.MenuBar;
+import com.vaadin.flow.component.menubar.MenuBarVariant;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.sidenav.SideNav;
+import com.vaadin.flow.component.sidenav.SideNavItem;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import org.delcom.ifs25035springbootcashflow.domain.entity.Role;
+import org.delcom.ifs25035springbootcashflow.domain.entity.User;
+import org.delcom.ifs25035springbootcashflow.domain.repository.IUserRepository;
+import org.delcom.ifs25035springbootcashflow.framework.auth.AuthSession;
+
+public class MainLayout extends AppLayout implements BeforeEnterObserver {
+
+    private final IUserRepository userRepository;
+    private boolean built = false;
+
+    public MainLayout(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        User user = AuthSession.currentUser(userRepository);
+        if (user == null) {
+            event.forwardTo(LoginView.class);
+            return;
+        }
+        if (!built) {
+            build(user);
+            built = true;
+        }
+    }
+
+    private void build(User user) {
+        DrawerToggle toggle = new DrawerToggle();
+
+        H3 title = new H3("Cashflow");
+        title.getStyle().set("margin", "0");
+
+        Avatar avatar = new Avatar(user.getFullName());
+        if (user.getPhotoPath() != null) {
+            avatar.setImage(user.getPhotoPath());
+        }
+
+        MenuBar menu = new MenuBar();
+        menu.addThemeVariants(MenuBarVariant.LUMO_TERTIARY_INLINE);
+        var root = menu.addItem(avatar);
+        root.getSubMenu().addItem("Profil", e -> UI.getCurrent().navigate("profile"));
+        root.getSubMenu().addItem("Keluar", e -> {
+            AuthSession.logout();
+            UI.getCurrent().navigate(LoginView.class);
+        });
+
+        HorizontalLayout header = new HorizontalLayout(toggle, title, menu);
+        header.setWidthFull();
+        header.setAlignItems(FlexComponent.Alignment.CENTER);
+        header.expand(title);
+        header.setPadding(true);
+
+        SideNav nav = new SideNav();
+        nav.addItem(new SideNavItem("Cashflow", "", VaadinIcon.WALLET.create()));
+        nav.addItem(new SideNavItem("Profil", "profile", VaadinIcon.USER.create()));
+        if (user.getRole() == Role.ADMIN) {
+            nav.addItem(new SideNavItem("Pengguna", "users", VaadinIcon.USERS.create()));
+        }
+
+        addToNavbar(header);
+        addToDrawer(nav);
+    }
+}
