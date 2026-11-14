@@ -1,9 +1,11 @@
 package org.delcom.ifs25035springbootcashflow.framework.view;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -34,13 +36,15 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
 
+        // Catatan: JANGAN pakai setId() di field, karena id akan menempel di
+        // elemen pembungkus Vaadin. Id harus ada di <input> aslinya.
         TextField username = new TextField("Username");
-        username.setId("login-username");
         username.setWidthFull();
+        assignInputId(username, "login-username");
 
         PasswordField password = new PasswordField("Password");
-        password.setId("login-password");
         password.setWidthFull();
+        assignInputId(password, "login-password");
 
         ProgressBar progress = new ProgressBar();
         progress.setIndeterminate(true);
@@ -50,6 +54,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         loginButton.setId("login-submit");
         loginButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         loginButton.setWidthFull();
+        loginButton.getStyle().set("cursor", "pointer");
+        loginButton.getStyle().set("margin-top", "0.85rem");
 
         loginButton.addClickListener(e -> {
             progress.setVisible(true);
@@ -69,9 +75,29 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         PageCard card = new PageCard();
         card.setWidth("380px");
-        card.add(new H2("Masuk ke Cashflow"), username, password, progress, loginButton,
+        card.add(new H2("Masuk"),
+                new Paragraph("Gunakan kredensial akun kamu untuk masuk"),
+                username, password, progress, loginButton,
                 new RouterLink("Belum punya akun? Daftar", RegisterView.class));
         add(card);
+    }
+
+    /** Memasang id pada elemen input asli di dalam field Vaadin, dan label for-nya. */
+    private static void assignInputId(Component field, String id) {
+        field.addAttachListener(e -> field.getElement().executeJs(
+                "const host = this;"
+                        + "const apply = () => {"
+                        + "  const input = host.querySelector('input');"
+                        + "  if (!input) return false;"
+                        + "  input.id = $0;"
+                        + "  const label = host.querySelector('label[slot=label]');"
+                        + "  if (label) label.setAttribute('for', $0);"
+                        + "  return true;"
+                        + "};"
+                        + "if (!apply()) {"
+                        + "  requestAnimationFrame(apply);"
+                        + "  setTimeout(apply, 100);"
+                        + "}", id));
     }
 
     @Override
