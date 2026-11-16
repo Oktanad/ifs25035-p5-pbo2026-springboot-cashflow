@@ -4,12 +4,14 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
+import com.vaadin.flow.component.textfield.Autocomplete;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -31,7 +33,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     public LoginView(AuthUseCase authUseCase, IUserRepository userRepository) {
         this.userRepository = userRepository;
-
         setSizeFull();
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
@@ -40,10 +41,12 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         // elemen pembungkus Vaadin. Id harus ada di <input> aslinya.
         TextField username = new TextField("Username");
         username.setWidthFull();
+        username.setAutocomplete(Autocomplete.USERNAME);
         assignInputId(username, "login-username");
 
         PasswordField password = new PasswordField("Password");
         password.setWidthFull();
+        password.setAutocomplete(Autocomplete.CURRENT_PASSWORD);
         assignInputId(password, "login-password");
 
         ProgressBar progress = new ProgressBar();
@@ -56,7 +59,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         loginButton.setWidthFull();
         loginButton.getStyle().set("cursor", "pointer");
         loginButton.getStyle().set("margin-top", "0.85rem");
-
         loginButton.addClickListener(e -> {
             progress.setVisible(true);
             loginButton.setEnabled(false);
@@ -73,13 +75,18 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
             }
         });
 
+        H1 heading = new H1("Masuk");
+        heading.getStyle().set("font-size", "var(--lumo-font-size-xl)").set("margin", "0");
+
         PageCard card = new PageCard();
         card.setWidth("380px");
-        card.add(new H2("Masuk"),
+        card.setMaxWidth("100%");
+        card.add(heading,
                 new Paragraph("Gunakan kredensial akun kamu untuk masuk"),
                 username, password, progress, loginButton,
                 new RouterLink("Belum punya akun? Daftar", RegisterView.class));
-        add(card);
+
+        add(new Main(card));
     }
 
     /** Memasang id pada elemen input asli di dalam field Vaadin, dan label for-nya. */

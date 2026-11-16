@@ -3,11 +3,13 @@ package org.delcom.ifs25035springbootcashflow.framework.view;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
+import com.vaadin.flow.component.textfield.Autocomplete;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -28,17 +30,21 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
 
     public RegisterView(AuthUseCase authUseCase, IUserRepository userRepository) {
         this.userRepository = userRepository;
-
         setSizeFull();
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
 
         TextField fullName = new TextField("Nama Lengkap");
         fullName.setWidthFull();
+        fullName.setAutocomplete(Autocomplete.NAME);
+
         TextField username = new TextField("Username");
         username.setWidthFull();
+        username.setAutocomplete(Autocomplete.USERNAME);
+
         PasswordField password = new PasswordField("Password");
         password.setWidthFull();
+        password.setAutocomplete(Autocomplete.NEW_PASSWORD);
 
         ProgressBar progress = new ProgressBar();
         progress.setIndeterminate(true);
@@ -47,7 +53,6 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         Button registerButton = new Button("Daftar");
         registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         registerButton.setWidthFull();
-
         registerButton.addClickListener(e -> {
             progress.setVisible(true);
             registerButton.setEnabled(false);
@@ -64,11 +69,16 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
             }
         });
 
+        H1 heading = new H1("Daftar Akun");
+        heading.getStyle().set("font-size", "var(--lumo-font-size-xl)").set("margin", "0");
+
         PageCard card = new PageCard();
         card.setWidth("380px");
-        card.add(new H2("Daftar Akun"), fullName, username, password, progress, registerButton,
+        card.setMaxWidth("100%");
+        card.add(heading, fullName, username, password, progress, registerButton,
                 new RouterLink("Sudah punya akun? Masuk", LoginView.class));
-        add(card);
+
+        add(new Main(card));
     }
 
     @Override
