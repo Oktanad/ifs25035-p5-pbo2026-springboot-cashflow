@@ -1,10 +1,10 @@
 package org.delcom.ifs25035springbootcashflow.framework.view;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -36,7 +36,7 @@ public class UserTransactionsView extends VerticalLayout implements BeforeEnterO
     private final IUserRepository userRepository;
 
     private final Grid<Transaction> grid = new Grid<>();
-    private final H3 title = new H3();
+    private final H2 title = new H2();
     private final Span balance = new Span();
 
     public UserTransactionsView(FinanceUseCase finance, FinancePresenter presenter,
@@ -66,8 +66,10 @@ public class UserTransactionsView extends VerticalLayout implements BeforeEnterO
         if (path == null) {
             return new Span("-");
         }
-        Image image = new Image(path, "bukti");
+        Image image = new Image(path, "Bukti transaksi");
         image.addClassName("proof-thumb");
+        image.getElement().setAttribute("loading", "lazy");
+        image.getElement().setAttribute("decoding", "async");
         image.addClickListener(e -> new ImagePreviewDialog(path).open());
         return image;
     }

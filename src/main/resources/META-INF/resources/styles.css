@@ -1,3 +1,41 @@
+/* ===== Warna dengan kontras cukup (aksesibilitas) ===== */
+:root {
+    --lumo-secondary-text-color: #374151;
+    --lumo-body-text-color: #111827;
+    --lumo-primary-text-color: #1D4ED8;
+    --lumo-success-text-color: #166534;
+    --lumo-error-text-color: #B91C1C;
+}
+
+vaadin-text-field input::placeholder,
+vaadin-password-field input::placeholder,
+vaadin-combo-box input::placeholder {
+    color: #4B5563;
+    opacity: 1;
+}
+
+vaadin-text-field::part(label),
+vaadin-password-field::part(label),
+vaadin-combo-box::part(label) {
+    color: #374151;
+}
+
+vaadin-text-field,
+vaadin-password-field,
+vaadin-combo-box {
+    --lumo-secondary-text-color: #374151;
+    --lumo-contrast-60pct: #4B5563;
+}
+
+p {
+    color: #374151;
+}
+
+a,
+a:visited {
+    color: #1D4ED8;
+}
+
 /* ===== Cursor pointer pada kontrol interaktif ===== */
 vaadin-button,
 vaadin-menu-bar-item,
@@ -61,7 +99,7 @@ vaadin-dialog-overlay::part(footer) {
 
 .summary-card .label {
     font-size: 0.8rem;
-    color: #6B7280;
+    color: #374151;
 }
 
 .summary-card .value {
@@ -70,11 +108,11 @@ vaadin-dialog-overlay::part(footer) {
 }
 
 .income {
-    color: #16A34A;
+    color: #166534;
 }
 
 .expense {
-    color: #DC2626;
+    color: #B91C1C;
 }
 
 .proof-thumb {

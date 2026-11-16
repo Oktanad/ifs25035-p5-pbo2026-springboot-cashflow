@@ -93,12 +93,14 @@ public class FinanceView extends VerticalLayout {
     }
 
     private Component buildToolbar() {
+        search.setLabel("Cari");
         search.setPlaceholder("Cari keterangan...");
         search.setClearButtonVisible(true);
         search.setValueChangeMode(ValueChangeMode.LAZY);
         search.addValueChangeListener(e -> refresh());
 
-        sort.setPlaceholder("Urutkan");
+        sort.setLabel("Urutkan");
+        sort.setPlaceholder("Pilih urutan");
         sort.setItems(SortOption.values());
         sort.setItemLabelGenerator(SortOption::getLabel);
         sort.setClearButtonVisible(true);
@@ -133,6 +135,7 @@ public class FinanceView extends VerticalLayout {
         grid.addComponentColumn(t -> {
             Button delete = new Button(VaadinIcon.TRASH.create(), e -> confirmDelete(t));
             delete.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY);
+            delete.getElement().setAttribute("aria-label", "Hapus transaksi");
             return delete;
         }).setHeader("Aksi");
         GridStyles.apply(grid);
@@ -143,8 +146,10 @@ public class FinanceView extends VerticalLayout {
         if (path == null) {
             return new Span("-");
         }
-        Image image = new Image(path, "bukti");
+        Image image = new Image(path, "Bukti transaksi");
         image.addClassName("proof-thumb");
+        image.getElement().setAttribute("loading", "lazy");
+        image.getElement().setAttribute("decoding", "async");
         image.addClickListener(e -> new ImagePreviewDialog(path).open());
         return image;
     }

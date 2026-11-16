@@ -16,9 +16,18 @@ spring:
       quiet-period: 400ms
     liveload:
       enabled: true
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 7d
 
 server:
   port: ${APP_PORT:${PORT:8080}}
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types: text/html,text/css,text/javascript,application/javascript,application/json
   servlet:
     session:
       timeout: 8h

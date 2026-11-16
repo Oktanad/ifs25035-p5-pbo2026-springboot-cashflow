@@ -4,7 +4,8 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.menubar.MenuBarVariant;
@@ -43,9 +44,11 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver {
 
     private void build(User user) {
         DrawerToggle toggle = new DrawerToggle();
+        toggle.getElement().setAttribute("aria-label", "Buka menu navigasi");
 
-        H3 title = new H3("Cashflow");
+        H1 title = new H1("Cashflow");
         title.getStyle().set("margin", "0");
+        title.getStyle().set("font-size", "var(--lumo-font-size-xl)");
 
         Avatar avatar = new Avatar(user.getFullName());
         if (user.getPhotoPath() != null) {
@@ -53,8 +56,9 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver {
         }
 
         MenuBar menu = new MenuBar();
+        menu.getElement().setAttribute("aria-label", "Menu pengguna");
         menu.addThemeVariants(MenuBarVariant.LUMO_TERTIARY_INLINE);
-        var root = menu.addItem(avatar);
+        MenuItem root = menu.addItem(avatar);
         root.getSubMenu().addItem("Profil", e -> UI.getCurrent().navigate("profile"));
         root.getSubMenu().addItem("Keluar", e -> {
             AuthSession.logout();
