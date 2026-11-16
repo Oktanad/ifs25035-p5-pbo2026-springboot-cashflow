@@ -80,6 +80,11 @@ vaadin-dialog-overlay::part(footer) {
     box-shadow: 0 0 10px #2563EB;
 }
 
+/* Sembunyikan teks "Online" bawaan Vaadin (loading bar tetap jalan) */
+vaadin-connection-indicator .v-status-message {
+    display: none;
+}
+
 /* ===== Kartu ===== */
 .page-card {
     background: #FFFFFF;

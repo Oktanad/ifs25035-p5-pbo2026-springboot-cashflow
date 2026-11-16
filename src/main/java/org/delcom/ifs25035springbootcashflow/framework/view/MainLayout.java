@@ -1,11 +1,13 @@
 package org.delcom.ifs25035springbootcashflow.framework.view;
 
+import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.menubar.MenuBarVariant;
@@ -78,7 +80,17 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver {
             nav.addItem(new SideNavItem("Pengguna", "users", VaadinIcon.USERS.create()));
         }
 
-        addToNavbar(header);
+        // Landmark banner
+        addToNavbar(new Header(header));
         addToDrawer(nav);
+    }
+
+    // Landmark main: berlaku untuk semua halaman yang memakai MainLayout
+    @Override
+    public void showRouterLayoutContent(HasElement content) {
+        super.showRouterLayoutContent(content);
+        if (content != null) {
+            content.getElement().setAttribute("role", "main");
+        }
     }
 }

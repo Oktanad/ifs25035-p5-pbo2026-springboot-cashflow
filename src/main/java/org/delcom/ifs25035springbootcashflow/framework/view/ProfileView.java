@@ -3,7 +3,7 @@ package org.delcom.ifs25035springbootcashflow.framework.view;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -85,7 +85,7 @@ public class ProfileView extends VerticalLayout {
 
         PageCard card = new PageCard();
         card.setMaxWidth("520px");
-        card.add(new H3("Profil Saya"), avatar, upload, fullName, newPassword, progress, save);
+        card.add(new H2("Profil Saya"), avatar, upload, fullName, newPassword, progress, save);
         add(card);
     }
 }

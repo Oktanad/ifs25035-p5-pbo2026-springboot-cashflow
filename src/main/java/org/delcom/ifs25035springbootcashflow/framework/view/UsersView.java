@@ -3,7 +3,7 @@ package org.delcom.ifs25035springbootcashflow.framework.view;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -40,7 +40,7 @@ public class UsersView extends VerticalLayout implements BeforeEnterObserver {
         GridStyles.apply(grid);
         grid.setItems(userUseCase.list());
 
-        add(new H3("Daftar Pengguna"), grid);
+        add(new H2("Daftar Pengguna"), grid);
     }
 
     @Override
