@@ -55,10 +55,19 @@ class AuthUseCaseTest {
     }
 
     @Test
-    void ensureRootAdminIsIdempotent() {
+    void ensureRootAdminIsIdempotent() throws Exception {
         auth.ensureRootAdmin("admin", "admin");
         auth.ensureRootAdmin("admin", "admin");
         assertEquals(1, repo.findAll().size());
         assertEquals(Role.ADMIN, repo.findByUsername("admin").orElseThrow().getRole());
+    }
+
+    @Test
+    void ensureRootAdminSyncsPasswordOfExistingAccount() throws Exception {
+        auth.ensureRootAdmin("ifs", "lama");
+        auth.ensureRootAdmin("ifs", "baru");
+        assertEquals(1, repo.findAll().size());
+        assertEquals("ifs", auth.login("ifs", "baru").getUsername());
+        assertThrows(ValidationException.class, () -> auth.login("ifs", "lama"));
     }
 }

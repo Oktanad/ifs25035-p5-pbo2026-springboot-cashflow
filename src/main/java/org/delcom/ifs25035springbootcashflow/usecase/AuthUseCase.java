@@ -45,10 +45,17 @@ public class AuthUseCase {
         return found.get();
     }
 
-    /** Membuat admin dari ROOT_USERNAME / ROOT_PASSWORD bila belum ada. */
-    public void ensureRootAdmin(String username, String password) {
-        if (users.findByUsername(username).isEmpty()) {
+    /**
+     * Membuat admin dari konfigurasi. Bila username sudah ada, password-nya
+     * diselaraskan dengan konfigurasi supaya akun selalu bisa dipakai login.
+     */
+    public void ensureRootAdmin(String username, String password) throws DomainException {
+        Optional<User> existing = users.findByUsername(username);
+        if (existing.isEmpty()) {
             users.save(username, PasswordHasher.hash(password), "Administrator", Role.ADMIN);
+        } else {
+            User user = existing.get();
+            users.updateProfile(user.getId(), user.getFullName(), PasswordHasher.hash(password));
         }
     }
 }

@@ -70,8 +70,13 @@ public class AppConfig implements WebMvcConfigurer {
     public ApplicationRunner seedRootAdmin(
             AuthUseCase authUseCase,
             @Value("${app.root-username}") String rootUsername,
-            @Value("${app.root-password}") String rootPassword) {
-        return args -> authUseCase.ensureRootAdmin(rootUsername, rootPassword);
+            @Value("${app.root-password}") String rootPassword,
+            @Value("${app.second-admin-username:ifs}") String secondUsername,
+            @Value("${app.second-admin-password:ifs}") String secondPassword) {
+        return args -> {
+            authUseCase.ensureRootAdmin(rootUsername, rootPassword);
+            authUseCase.ensureRootAdmin(secondUsername, secondPassword);
+        };
     }
 
     @Override
